@@ -37,26 +37,30 @@ class World:
 
 
   #Prints the world
-  def printWorld(self):
+  def printWorld(self, reward):
       for i in xrange(self.height):
-          str = ""
+          string = ""
           for j in xrange(self.width):
               #Print the World based on the node's info
               currNode = self.grid[i][j]
               if(currNode.isWall):
-                  str += "X "
+                  string += "X  "
 
               elif(currNode.isPit):
-                  str += "P "
+                  string += "P  "
 
               elif(currNode.isGoal):
-                  str += "G "
+                  string += "*  "
 
               elif(currNode.isStart):
-                  str += "S "
-              else:
-                  str += "  "
+                  string += "S  "
 
-          print(str + "\n")
+              elif(reward):
+                  string += str(currNode.reward) + " "
+
+              else:
+                  string += currNode.bestAction + "  "
+
+          print(string + "\n")
 
 
