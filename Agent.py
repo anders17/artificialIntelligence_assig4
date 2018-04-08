@@ -2,10 +2,11 @@
 import random
 
 class Agent:
-    def __init__(self):
+    def __init__(self, moveReward, giveUpReward):
         #Dictionary
         self.current_state = [] # example: [1,0]
-        self.Q_pairs = {} # key is [statex,statey,action]
+        self.moveReward = moveReward
+        self.giveUpReward = giveUpRewardg
 
     # choose action
     # see if exploring
