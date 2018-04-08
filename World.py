@@ -8,7 +8,7 @@ class World:
       self.grid = [[Node() for j in range(0,9)] for i in range(0,8) ] #Width = 9 Height = 8
 
   #Set up the world
-  def setUpWorld(self):
+  def setUpWorld(self, goalReward, pitReward):
       #Set rightmost and leftmost walls
       for i in xrange(self.height):
           self.grid[i][self.width-1].isWall = True
@@ -33,6 +33,18 @@ class World:
 
       #set the goal
       self.grid[4][3].isGoal = True
+
+      #Loop through everything and set the rewards
+      for i in xrange(self.height):
+          for j in xrange(self.width):
+              currNode = self.grid[i][j]
+
+              if(currNode.isPit):
+                  currNode.pitReward = pitReward
+
+              elif(currNode.isGoal):
+                  currNode.goalReward = goalReward
+
 
 
 
@@ -59,7 +71,7 @@ class World:
                   string += str(currNode.reward) + " "
 
               else:
-                  string += currNode.bestAction + "  "
+                  string += currNode.getBestAction() + "  "
 
           print(string + "\n")
 

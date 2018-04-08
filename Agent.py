@@ -6,6 +6,7 @@ class Agent:
         self.Q_pairs = {} # key is [statex,statey,action]
 
 
+
     # choose move
     # determine move to take based on q(s,a) values
     # update move 'state recommendation'
