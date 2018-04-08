@@ -76,3 +76,38 @@ class World:
           print(string + "\n")
 
 
+  # Prints recommended actions
+  def printRecActions(self):
+      for i in xrange(self.height):
+          string = ""
+          for j in xrange(self.width):
+              #Print the World based on the node's info
+              currNode = self.grid[i][j]
+              if(currNode.isWall):
+                  string += "X  "
+
+              elif(currNode.isPit):
+                  string += "P  "
+
+              elif(currNode.isGoal):
+                  string += "*  "
+
+              elif(currNode.isStart):
+                  string += "S  "
+
+              elif(currNode.bestAction == 0):
+                  string += "^  "
+
+              elif (currNode.bestAction == 1):
+                  string += ">  "
+
+              elif (currNode.bestAction == 2):
+                  string += "v  "
+
+              elif (currNode.bestAction == 3):
+                  string += "<  "
+
+              else:
+                  string += "G  "
+
+          print(string + "\n")
