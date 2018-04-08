@@ -16,7 +16,7 @@ def main():
   myWorld.printWorld(False)
 
   agent = Agent(float(actionReward),float(giveUpReward))
-  agent.train(int(trialNum),float(epsilon))
+  agent.train(int(trialNum),float(epsilon),world)
 
   print("End")
 
