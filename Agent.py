@@ -7,14 +7,14 @@ class Agent:
 
 
     # choose move
-    # determine move to take based on q(s,a) values
-    # update move 'state recommendation'
-    def choose_move(self,world):
+    # see if exploring
+    # if not, determine move to take based on q(s,a) values
+    # or give up
+    def choose_move(self,world,epsilon):
         pass
 
 
     # function to determine the move actually taken
-    # epsilon chance random
     # given move desired, 10% perpendicular each direction, 10% 2x forward
     # outputs action
     def make_move(self,action):
