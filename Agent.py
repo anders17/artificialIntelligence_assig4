@@ -8,7 +8,8 @@ class Agent:
 
     # choose move
     # determine move to take based on q(s,a) values
-    def choose_move(self):
+    # update move 'state recommendation'
+    def choose_move(self,world):
         pass
 
 
@@ -22,7 +23,7 @@ class Agent:
 
     # calculate q(s,a) based on current_state and action to be taken
     # append current_state
-    def updateQ(self,action):
+    def updateQ(self,action,world):
         pass
 
 
