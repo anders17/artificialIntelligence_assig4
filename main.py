@@ -1,6 +1,11 @@
 #Main Function
 def main():
-  print("Hello World")
+  goalReward = raw_input('Enter the reward for the goal state.')
+  pitReward = raw_input('Enter the reward for a pit state.')
+  actionReward = raw_input('Enter the reward for taking an action.')
+  giveUpReward = raw_input('Enter the reward for giving up.')
+  trailNum = raw_input('Enter the number of trials to train the agent for.')
+  epsilon = raw_input('Enter the epsilon parameter.')
 
 
 #Run the main function
