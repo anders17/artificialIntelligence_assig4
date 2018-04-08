@@ -12,7 +12,7 @@ class Agent:
     # see if exploring
     # if not, determine move to take based on q(s,a) values
     # or give up
-    def choose_action(self,epsilon):
+    def choose_action(self,world,epsilon):
         chosen_action = None
         if random.randint(0,100) < epsilon:
             pass
@@ -30,7 +30,7 @@ class Agent:
 
     # calculate q(s,a) based on current_state and action to be taken
     # append current_state
-    def updateQ(self,action,world):
+    def updateQ(self,world,action):
         pass
 
 
