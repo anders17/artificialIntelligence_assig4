@@ -14,12 +14,16 @@ class Agent:
     # see if exploring
     # if not, determine move to take based on q(s,a) values
     # or give up
-    def choose_action(self,world,epsilon):
+    def choose_action(self, world, epsilon):
         chosen_action = None
-        if random.randint(0,100) < epsilon:
-            pass
+        if random.randint(0, 100) < epsilon:
+            chosen_action = random.randint(0, 5)
         else:
-            pass
+            highest_q = -100000000
+            for i, reward in enumerate(world.grid[self.current_state[0]][self.current_state[1]].possRewards):
+                if reward > highest_q:
+                    highest_q = reward
+                    chosen_action = i
         return chosen_action
 
 
