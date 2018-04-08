@@ -6,7 +6,7 @@ class Agent:
         #Dictionary
         self.current_state = [] # example: [1,0]
         self.moveReward = moveReward
-        self.giveUpReward = giveUpRewardg
+        self.giveUpReward = giveUpReward
 
     # choose action
     # see if exploring
