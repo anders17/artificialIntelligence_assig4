@@ -26,6 +26,8 @@ class Agent:
     def updateQ(self,action,world):
         pass
 
+    def train(self,trailNum,epsilon):
+        pass
 
 
 
