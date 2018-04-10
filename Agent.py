@@ -264,9 +264,10 @@ class Agent:
             # Breaks when steps into a pit, the goal, or if it gives up
             while(1):
                 action = self.choose_action(world,epsilon)
-                finish = self.make_action(action)
+                finish = self.make_action(action,world)
 
-
+                currentState = self.current_state
+                world.printWorld(False,currentState[0],currentState[1])
                 # if finish is true, break loop and go to next trial
                 if(finish):
                     break
