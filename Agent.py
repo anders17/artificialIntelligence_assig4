@@ -2,13 +2,12 @@
 import random
 
 class Agent:
-    def __init__(self, moveReward):
+    def __init__(self):
         #Dictionary
         self.current_state = [] # example: [1,0]
         self.last_state = []
 
         self.last_action = -1
-        self.moveReward = moveReward
         self.possibleMoves = 5
         self.stepSize = 0.5
         self.gama = 0.9
