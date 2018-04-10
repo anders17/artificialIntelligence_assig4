@@ -30,8 +30,8 @@ class Node:
 
     # Sets the bestAction
     def setBestAction(self,giveUpReward):
+        chosen_action = None
         for i, reward in enumerate(self.possRewards):
-            chosen_action = None
             highest_q = -100000000
             if reward > highest_q:
                 highest_q = reward
