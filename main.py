@@ -22,11 +22,10 @@ def main():
   #World Setup
   myWorld = World(float(goalReward),float(pitReward),float(giveUpReward),float(actionReward))
   myWorld.setUpWorld()
-  myWorld.printWorld(False)
 
   #Agent setup
   agent = Agent()
-  #agent.train(int(trialNum),float(epsilon),myWorld)
+  agent.train(int(trialNum),float(epsilon),myWorld)
 
   print("End")
 

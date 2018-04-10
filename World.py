@@ -72,10 +72,10 @@ class World:
                   string += "S  "
 
               elif(reward):
-                  string += str(currNode.reward) + " "
+                  string += str(currNode.possRewards[currNode.bestAction]) + " "
 
               else:
-                  string += currNode.getBestAction() + "  "
+                  string += currNode.getBestActionString() + "  "
 
           print(string + "\n")
 

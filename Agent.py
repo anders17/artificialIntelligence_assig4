@@ -251,7 +251,7 @@ class Agent:
 
 
 
-
+    #Trains the agent
     def train(self,trialNum,epsilon,world):
         for i in xrange(trialNum):
             iLoc = 0
@@ -264,7 +264,13 @@ class Agent:
             # Breaks when steps into a pit, the goal, or if it gives up
             while(1):
                 action = self.choose_action(world,epsilon)
-                finish = self.make_action(action)
+                finish = self.make_action(action, world)
+
+                Ai = self.current_state[0]
+                Aj = self.current_state[1]
+
+                world.printWorld(False,Ai, Aj)
+
 
 
                 # if finish is true, break loop and go to next trial
