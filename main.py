@@ -12,12 +12,12 @@ def main():
   # epsilon = raw_input('Enter the epsilon parameter:')
 
   #Testing Vars
-  goalReward = 1
-  pitReward = 1
-  actionReward = 1
-  giveUpReward = 1
+  goalReward = 5
+  pitReward = -2
+  actionReward = -.1
+  giveUpReward = -3
   trialNum = 1
-  epsilon = 0.9
+  epsilon = 0.1
 
   #World Setup
   myWorld = World(float(goalReward),float(pitReward),float(giveUpReward),float(actionReward))

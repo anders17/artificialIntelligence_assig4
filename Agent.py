@@ -22,7 +22,7 @@ class Agent:
         j = self.current_state[1]
 
         if random.randint(0, 100) < epsilon:
-            chosen_action = random.randint(0, 5)
+            chosen_action = random.randint(0, 3)
         else:
             highest_q = -100000000
             for i, reward in enumerate(world.grid[i][j].possRewards):
@@ -84,7 +84,7 @@ class Agent:
 
         #Normal Behavior 70%
         if(myRandom <= 6):
-            print("Normal Move")
+            # print("Normal Move")
             #Up
             if(action == 0 and self.validJ(i-1, world)):
               i-=1
@@ -103,7 +103,7 @@ class Agent:
 
         #perpendicular Left 10%
         elif(myRandom == 7):
-            print("Perpendicular Left Move")
+            # print("Perpendicular Left Move")
             #Up
             if(action == 0 and self.validI(j-1, world)):
               #LEFT
@@ -126,7 +126,7 @@ class Agent:
 
         #Perpendicular Right 10%
         elif(myRandom == 8):
-            print("Perpendicular Right Move")
+            # print("Perpendicular Right Move")
             #Up
             if(action == 0 and self.validI(j+1, world)):
               #RIGHT
@@ -152,7 +152,7 @@ class Agent:
         #Double step 10%
         #NOTE: check every step
         elif(myRandom == 9):
-            print("Double Steps")
+            # print("Double Steps")
             extraSteps = 2
 
             for counter in xrange(extraSteps):
@@ -185,6 +185,7 @@ class Agent:
 
         #update positions
         self.last_state = currState
+        self.last_action = currAction
         self.current_state = [i,j]
 
         return 0
@@ -217,7 +218,7 @@ class Agent:
 
         #Update q1
         world.grid[i2][j2].possRewards[previousAction] = math
-        world.grid[i2][j2].setBestAction()
+        world.grid[i2][j2].setBestAction(world.giveUpReward)
 
     #Updates the previous state whenever we have reached a pit in our current position
     def updateQTS(self,world, currState, previousState, previousAction):
@@ -240,11 +241,11 @@ class Agent:
         q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Get the math
-        math = q1 + self.stepSize * (world.grid[i][j].reward + (self.gama * q2) - q1)
+        math = q1 + self.stepSize * (world.actionReward + (self.gama * q2) - q1)
 
         #
         world.grid[i2][j2].possRewards[previousAction] = math
-        world.grid[i2][j2].setBestAction()
+        world.grid[i2][j2].setBestAction(world.giveUpReward)
 
 
 
@@ -254,23 +255,27 @@ class Agent:
     #Trains the agent
     def train(self,trialNum,epsilon,world):
         for i in xrange(trialNum):
+            print('Trial ' + str(i))
             iLoc = 0
             jLoc = 0
             while (world.grid[iLoc][jLoc].isPit) or (world.grid[iLoc][jLoc].isGoal) or (world.grid[iLoc][jLoc].isWall):
-                iLoc = random.randint(1,len(world.width)-2)
-                jLoc = random.randint(1,len(world.height)-2)
+                iLoc = random.randint(1,world.width-2)
+                jLoc = random.randint(1,world.height-2)
             self.current_state = [iLoc,jLoc]
 
             # Breaks when steps into a pit, the goal, or if it gives up
             while(1):
-                action = self.choose_action(world,epsilon)
+                if(i == trialNum-1):
+                    currentState = self.current_state
+                    world.printWorld(False, currentState[0], currentState[1])
 
+                action = self.choose_action(world,epsilon)
                 finish = self.make_action(action, world)
 
                 Ai = self.current_state[0]
                 Aj = self.current_state[1]
-
                 world.printWorld(False,Ai, Aj)
+
 
                 # if finish is true, break loop and go to next trial
                 if(finish):
