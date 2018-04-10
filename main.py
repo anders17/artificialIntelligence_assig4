@@ -12,10 +12,10 @@ def main():
   # epsilon = raw_input('Enter the epsilon parameter:')
 
   #Testing Vars
-  goalReward = 1
-  pitReward = 1
-  actionReward = 1
-  giveUpReward = 1
+  goalReward = 10
+  pitReward = -5
+  actionReward = -.1
+  giveUpReward = -3
   trialNum = 1
   epsilon = 0.9
 

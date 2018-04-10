@@ -257,17 +257,18 @@ class Agent:
             iLoc = 0
             jLoc = 0
             while (world.grid[iLoc][jLoc].isPit) or (world.grid[iLoc][jLoc].isGoal) or (world.grid[iLoc][jLoc].isWall):
-                iLoc = random.randint(1,len(world.width)-2)
-                jLoc = random.randint(1,len(world.height)-2)
+                iLoc = random.randint(1,world.width-2)
+                jLoc = random.randint(1,world.height-2)
             self.current_state = [iLoc,jLoc]
 
             # Breaks when steps into a pit, the goal, or if it gives up
             while(1):
+                currentState = self.current_state
+                world.printWorld(False, currentState[0], currentState[1])
                 action = self.choose_action(world,epsilon)
                 finish = self.make_action(action,world)
 
-                currentState = self.current_state
-                world.printWorld(False,currentState[0],currentState[1])
+
                 # if finish is true, break loop and go to next trial
                 if(finish):
                     break
