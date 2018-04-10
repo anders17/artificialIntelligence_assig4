@@ -79,7 +79,7 @@ class World:
 
           print(string + "\n")
 
-      print("\n")
+      print("-------------------------------------------------\n")
 
 
   # Prints recommended actions
