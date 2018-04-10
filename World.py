@@ -2,13 +2,17 @@ from Node import Node
 
 #Grid World (holds all the data)
 class World:
-  def __init__(self):
+  def __init__(self,pitReward,goalReward,giveUpReward,actionReward):
       self.width = 9
       self.height = 8
       self.grid = [[Node() for j in range(0,9)] for i in range(0,8) ] #Width = 9 Height = 8
+      self.pitReward = pitReward
+      self.goalReward = goalReward
+      self.giveUpReward = giveUpReward
+      self.actionReward = actionReward
 
   #Set up the world
-  def setUpWorld(self, goalReward, pitReward):
+  def setUpWorld(self):
       #Set rightmost and leftmost walls
       for i in xrange(self.height):
           self.grid[i][self.width-1].isWall = True
@@ -35,15 +39,10 @@ class World:
       self.grid[4][3].isGoal = True
 
       #Loop through everything and set the rewards
-      for i in xrange(self.height):
-          for j in xrange(self.width):
-              currNode = self.grid[i][j]
-
-              if(currNode.isPit):
-                  currNode.pitReward = pitReward
-
-              elif(currNode.isGoal):
-                  currNode.goalReward = goalReward
+      # for i in xrange(self.height):
+      #     for j in xrange(self.width):
+      #         currNode = self.grid[i][j]
+      #         currNode.reward = self.actionReward
 
 
 

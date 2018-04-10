@@ -20,12 +20,12 @@ def main():
   epsilon = 0.9
 
   #World Setup
-  myWorld = World()
-  myWorld.setUpWorld(float(goalReward),float(pitReward))
+  myWorld = World(float(goalReward),float(pitReward),float(giveUpReward),float(actionReward))
+  myWorld.setUpWorld()
   myWorld.printWorld(False)
 
   #Agent setup
-  agent = Agent(float(actionReward),float(giveUpReward))
+  agent = Agent()
   #agent.train(int(trialNum),float(epsilon),myWorld)
 
   print("End")

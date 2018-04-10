@@ -2,14 +2,13 @@
 import random
 
 class Agent:
-    def __init__(self, moveReward, giveUpReward):
+    def __init__(self, moveReward):
         #Dictionary
         self.current_state = [] # example: [1,0]
         self.last_state = []
 
         self.last_action = -1
         self.moveReward = moveReward
-        self.giveUpReward = giveUpReward
         self.possibleMoves = 5
         self.stepSize = 0.5
         self.gama = 0.9
@@ -20,14 +19,20 @@ class Agent:
     # or give up
     def choose_action(self, world, epsilon):
         chosen_action = None
+        i = self.current_state[0]
+        j = self.current_state[1]
+
         if random.randint(0, 100) < epsilon:
             chosen_action = random.randint(0, 5)
         else:
             highest_q = -100000000
-            for i, reward in enumerate(world.grid[self.current_state[0]][self.current_state[1]].possRewards):
+            for i, reward in enumerate(world.grid[i][j].possRewards):
                 if reward > highest_q:
                     highest_q = reward
                     chosen_action = i
+            if world.giveUpReward > highest_q:
+                chosen_action = 4
+                highest_q = world.giveUpReward
         return chosen_action
 
     #returns true if it is a valid I position (based on the height of the world)
@@ -209,10 +214,11 @@ class Agent:
         q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Math to update q1 based on what we found on q2
-        math = q1 + self.stepSize * (world.grid[i][j].reward + (self.gama * q2) - q1)
+        math = q1 + self.stepSize * (world.actionReward + (self.gama * q2) - q1)
 
         #Update q1
         world.grid[i2][j2].possRewards[previousAction] = math
+        world.grid[i2][j2].setBestAction()
 
     #Updates the previous state whenever we have reached a pit in our current position
     def updateQTS(self,world, currState, previousState, previousAction):
@@ -225,15 +231,21 @@ class Agent:
         i2 = previousState[0]
         j2 = previousState[1]
 
-        if(curNode.isPit or curNode.isGoal):
-            q1 = curNode.pitReward
-            q2 = world.grid[i2][j2].possRewards[previousAction]
 
-            #Get the math
-            math = q1 + self.stepSize * (world.grid[i][j].reward + (self.gama * q2) - q1)
+        if(curNode.isPit):
+            q1 = world.pitReward
+        if(curNode.isGoal):
+            q1 = world.goalReward
+        else:
+            q1 = world.giveUpReward
+        q2 = world.grid[i2][j2].possRewards[previousAction]
 
-            #
-            world.grid[i2][j2].possRewards[previousAction] = math
+        #Get the math
+        math = q1 + self.stepSize * (world.grid[i][j].reward + (self.gama * q2) - q1)
+
+        #
+        world.grid[i2][j2].possRewards[previousAction] = math
+        world.grid[i2][j2].setBestAction()
 
 
 
@@ -260,6 +272,7 @@ class Agent:
                 if(finish):
                     break
 
+            self.cleanAgent()
 
         world.printRecActions()
 
