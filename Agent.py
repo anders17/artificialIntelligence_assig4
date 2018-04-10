@@ -86,41 +86,41 @@ class Agent:
         if(myRandom <= 6):
             # print("Normal Move")
             #Up
-            if(action == 0 and self.validJ(i-1, world)):
+            if(action == 0 and self.validI(i-1, world)):
               i-=1
 
             #Right
-            elif(action == 1 and self.validI(j+1, world)):
+            elif(action == 1 and self.validJ(j+1, world)):
               j+=1
 
             #Down
-            elif(action == 2 and self.validJ(i+1, world)):
+            elif(action == 2 and self.validI(i+1, world)):
               i+=1
 
             #Left
-            elif(action == 3 and self.validI(j-1, world)):
+            elif(action == 3 and self.validJ(j-1, world)):
               j-=1
 
         #perpendicular Left 10%
         elif(myRandom == 7):
             # print("Perpendicular Left Move")
             #Up
-            if(action == 0 and self.validI(j-1, world)):
+            if(action == 0 and self.validJ(j-1, world)):
               #LEFT
               j-=1
 
             #Right
-            elif(action == 1 and self.validJ(i-1, world) ):
+            elif(action == 1 and self.validI(i-1, world) ):
               #UP
               i-=1
 
             #Down
-            elif(action == 2 and self.validI(j+1, world)):
+            elif(action == 2 and self.validJ(j+1, world)):
               #RIGHT
               j+=1
 
             #Left
-            elif(action == 3 and self.validJ(i+1, world)):
+            elif(action == 3 and self.validI(i+1, world)):
               #DOWN
               i+=1
 
@@ -128,22 +128,22 @@ class Agent:
         elif(myRandom == 8):
             # print("Perpendicular Right Move")
             #Up
-            if(action == 0 and self.validI(j+1, world)):
+            if(action == 0 and self.validJ(j+1, world)):
               #RIGHT
               j+=1
 
             #Right
-            elif(action == 1 and self.validJ(i+1, world)):
+            elif(action == 1 and self.validI(i+1, world)):
               #DOWN
               i+=1
 
             #Down
-            elif(action == 2 and self.validI(j-1, world)):
+            elif(action == 2 and self.validJ(j-1, world)):
               #LEFT
               j-=1
 
             #Left
-            elif(action == 3 and self.validJ(i-1, world)):
+            elif(action == 3 and self.validI(i-1, world)):
               #UP
               i-=1
 
@@ -157,19 +157,19 @@ class Agent:
 
             for counter in xrange(extraSteps):
                 #Up
-                if(action == 0 and self.validJ(i-1, world)):
+                if(action == 0 and self.validI(i-1, world)):
                   i-=1
 
                 #Right
-                elif(action == 1 and self.validI(j+1, world)):
+                elif(action == 1 and self.validJ(j+1, world)):
                   j+=1
 
                 #Down
-                elif(action == 2 and self.validJ(i+1, world)):
+                elif(action == 2 and self.validI(i+1, world)):
                   i+=1
 
                 #Left
-                elif(action == 3 and self.validI(j-1, world)):
+                elif(action == 3 and self.validJ(j-1, world)):
                   j-=1
 
                 #If the new coordinates happen to be in the pit then just return them
