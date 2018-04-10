@@ -22,7 +22,6 @@ def main():
   #World Setup
   myWorld = World()
   myWorld.setUpWorld(float(goalReward),float(pitReward))
-  myWorld.printWorld(False)
 
   #Agent setup
   agent = Agent(float(actionReward),float(giveUpReward))

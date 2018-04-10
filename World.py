@@ -49,13 +49,18 @@ class World:
 
 
   #Prints the world
-  def printWorld(self, reward):
+  def printWorld(self, reward, Ai, Aj):
+
       for i in xrange(self.height):
           string = ""
           for j in xrange(self.width):
               #Print the World based on the node's info
               currNode = self.grid[i][j]
-              if(currNode.isWall):
+
+              if(Ai == i and Aj == j):
+                  string += "A  "
+
+              elif(currNode.isWall):
                   string += "X  "
 
               elif(currNode.isPit):
