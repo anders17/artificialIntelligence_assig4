@@ -29,6 +29,8 @@ class Agent:
                 if reward > highest_q:
                     highest_q = reward
                     chosen_action = i
+            if(world.grid[i][j].possRewards[1:] == world.grid[i][j].possRewards[:-1]):
+                chosen_action = random.randint(0, 3)
             if world.giveUpReward > highest_q:
                 chosen_action = 4
                 highest_q = world.giveUpReward

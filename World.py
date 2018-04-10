@@ -79,6 +79,8 @@ class World:
 
           print(string + "\n")
 
+      print("-------------------------------------------------\n")
+
 
   # Prints recommended actions
   def printRecActions(self):
