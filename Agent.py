@@ -254,7 +254,7 @@ class Agent:
 
 
 
-
+    #Trains the agent
     def train(self,trialNum,epsilon,world):
         for i in xrange(trialNum):
             print('Trial ' + str(i))
@@ -270,8 +270,13 @@ class Agent:
                 if(i == trialNum-1):
                     currentState = self.current_state
                     world.printWorld(False, currentState[0], currentState[1])
+
                 action = self.choose_action(world,epsilon)
-                finish = self.make_action(action,world)
+                finish = self.make_action(action, world)
+
+                Ai = self.current_state[0]
+                Aj = self.current_state[1]
+                world.printWorld(False,Ai, Aj)
 
 
                 # if finish is true, break loop and go to next trial
