@@ -6,6 +6,7 @@ class Agent:
         #Dictionary
         self.current_state = [] # example: [1,0]
         self.last_state = []
+
         self.last_action = -1
         self.moveReward = moveReward
         self.giveUpReward = giveUpReward
@@ -29,156 +30,213 @@ class Agent:
                     chosen_action = i
         return chosen_action
 
-    #returns true if it is a valid I position (based on the width of the world)
+    #returns true if it is a valid I position (based on the height of the world)
     def validI(self, i, world):
-        width = world.width
-
-        #Check if withing boundaries and not a wall
-        if(i < width-1 and i > 0):
-            return True
-
-        return False
-
-
-    #returns true if it is a valid J position (based on the height of the world)
-    def validJ(self, j, world):
         height = world.height
 
         #Check if within boundaries
-        if(j < height-1 and j>0):
+        if(i < height-1 and i>0):
             return True
 
         return False
 
+    #returns true if it is a valid J position (based on the width of the world)
+    def validJ(self, j, world):
+        width = world.width
+
+        #Check if withing boundaries and not a wall
+        if(j < width-1 and j > 0):
+            return True
+
+        return False
+
+
+
     #returns true if this coordinate will not fall in the pit or hit a wall
-    def isThisPit(self,i,j,world):
-        return world.grid[i][j].isPit
+    def isTerminalState(self,i,j,world):
+        return (world.grid[i][j].isPit or world.grid[i][j].isGoal)
 
     # function to determine the move actually taken
     # given move desired, 10% perpendicular each direction, 10% 2x forward
     # outputs 1 if found pit, goal, or decided to give up; otherwise return 0
-    def make_action(self,action, world):
+    def make_action(self, action, world):
         i = self.current_state[0]
         j = self.current_state[1]
 
         myRandom = random.randint(0, 9)
 
+
+        #Info
+        previousState = self.last_state
+        currState = self.current_state
+        previousAction = self.last_action
+        currAction = action
+
+        #Check if the current position is terminal state then update q and break
+        if(self.isTerminalState(i,j,world) or action == 4):
+            self.updateQTS(world, currState, previousState, previousAction)
+            return 1
+
+
         #Normal Behavior 70%
         if(myRandom <= 6):
+            print("Normal Move")
             #Up
-            if(action == 0 and self.validJ(j+1, world)):
-              j+=1
+            if(action == 0 and self.validJ(i-1, world)):
+              i-=1
 
             #Right
-            elif(action == 1 and self.validI(i+1, world)):
-              i+=1
+            elif(action == 1 and self.validI(j+1, world)):
+              j+=1
 
             #Down
-            elif(action == 2 and self.validJ(j-1, world)):
-              j-=1
+            elif(action == 2 and self.validJ(i+1, world)):
+              i+=1
 
             #Left
-            elif(action == 3 and self.validI(i-1, world)):
-              i-=1
+            elif(action == 3 and self.validI(j-1, world)):
+              j-=1
 
         #perpendicular Left 10%
         elif(myRandom == 7):
+            print("Perpendicular Left Move")
             #Up
-            if(action == 0 and self.validI(i-1, world)):
+            if(action == 0 and self.validI(j-1, world)):
               #LEFT
-              i-=1
+              j-=1
 
             #Right
-            elif(action == 1 and self.validJ(j+1, world) ):
+            elif(action == 1 and self.validJ(i-1, world) ):
               #UP
-              j+=1
+              i-=1
 
             #Down
-            elif(action == 2 and self.validI(i+1, world)):
+            elif(action == 2 and self.validI(j+1, world)):
               #RIGHT
-              i+=1
+              j+=1
 
             #Left
-            elif(action == 3 and self.validJ(j-1, world)):
+            elif(action == 3 and self.validJ(i+1, world)):
               #DOWN
-              j-=1
+              i+=1
 
         #Perpendicular Right 10%
         elif(myRandom == 8):
+            print("Perpendicular Right Move")
             #Up
-            if(action == 0 and self.validI(i+1, world)):
+            if(action == 0 and self.validI(j+1, world)):
               #RIGHT
-              i+=1
+              j+=1
 
             #Right
-            elif(action == 1 and self.validJ(j-1, world)):
+            elif(action == 1 and self.validJ(i+1, world)):
               #DOWN
-              j-=1
+              i+=1
 
             #Down
-            elif(action == 2 and self.validI(i-1, world)):
+            elif(action == 2 and self.validI(j-1, world)):
               #LEFT
-              i-=1
+              j-=1
 
             #Left
-            elif(action == 3 and self.validJ(j+1, world)):
+            elif(action == 3 and self.validJ(i-1, world)):
               #UP
-              j+=1
+              i-=1
 
 
 
         #Double step 10%
         #NOTE: check every step
         elif(myRandom == 9):
+            print("Double Steps")
             extraSteps = 2
-            for i in xrange(extraSteps):
+
+            for counter in xrange(extraSteps):
                 #Up
-                if(action == 0 and self.validJ(j+1, world)):
-                  j+=1
-
-                #Right
-                elif(action == 1 and self.validI(i+1, world)):
-                  i+=1
-
-                #Down
-                elif(action == 2 and self.validJ(j-1, world)):
-                  j-=1
-
-                #Left
-                elif(action == 3 and self.validI(i-1, world)):
+                if(action == 0 and self.validJ(i-1, world)):
                   i-=1
 
+                #Right
+                elif(action == 1 and self.validI(j+1, world)):
+                  j+=1
+
+                #Down
+                elif(action == 2 and self.validJ(i+1, world)):
+                  i+=1
+
+                #Left
+                elif(action == 3 and self.validI(j-1, world)):
+                  j-=1
+
                 #If the new coordinates happen to be in the pit then just return them
-                if(self.isThisPit(i,j,world)):
-                    return [i,j]
+                if(self.isTerminalState(i,j,world)):
+                    #Break the loop because we have reached a terminal state
+                    break
 
                 #otherwise you can keep changing them
 
-        #Return the valid coordinates
-        return [i,j]
+        #Check if this is the beginning of the walk
+        if(previousAction != -1):
+            self.updateQ(world, currState, previousState, previousAction, currAction)
+
+        #update positions
+        self.last_state = currState
+        self.current_state = [i,j]
+
+        return 0
 
 
+
+    #Clean agent
+    def cleanAgent(self):
+        self.last_action = -1
+        self.last_state = []
+        self.current_state = []
 
 
 
     # calculate q(s,a) based on current_state and action to be taken
     # append current_state
-    def updateQ(self,world, currState, nextState, action1,action2):
+    def updateQ(self,world, currState, previousState , previousAction,currAction):
         #q1
         i = currState[0]
         j = currState[1]
-        q1 = world.grid[i][j].possRewards[action1]
+        q1 = world.grid[i][j].possRewards[currAction]
 
         #q2
-        i2 = nextState[0]
-        j2 = nextState[1]
-        q2 = world.grid[i2][j2].possRewards[action2]
+        i2 = previousState[0]
+        j2 = previousState[1]
+        q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Math to update q1 based on what we found on q2
         math = q1 + self.stepSize * (world.grid[i][j].reward + (self.gama * q2) - q1)
 
         #Update q1
-        world.grid[i][j].possRewards[action1] = math
+        world.grid[i2][j2].possRewards[previousAction] = math
+
+    #Updates the previous state whenever we have reached a pit in our current position
+    def updateQTS(self,world, currState, previousState, previousAction):
+        #q1
+        i = currState[0]
+        j = currState[1]
+        curNode = world.grid[i][j]
+
+        #q2
+        i2 = previousState[0]
+        j2 = previousState[1]
+
+        if(curNode.isPit or curNode.isGoal):
+            q1 = curNode.pitReward
+            q2 = world.grid[i2][j2].possRewards[previousAction]
+
+            #Get the math
+            math = q1 + self.stepSize * (world.grid[i][j].reward + (self.gama * q2) - q1)
+
+            #
+            world.grid[i2][j2].possRewards[previousAction] = math
+
+
+
 
 
 
@@ -197,9 +255,11 @@ class Agent:
                 action = self.choose_action(world,epsilon)
                 finish = self.make_action(action)
 
+
                 # if finish is true, break loop and go to next trial
                 if(finish):
                     break
+
 
         world.printRecActions()
 
