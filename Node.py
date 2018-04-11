@@ -10,7 +10,7 @@ class Node:
         self.isWall = False
 
         #0=UP, 1=Right, 2=Down, 3= Left
-        self.possRewards = [-0.004] * 4
+        self.possRewards = [-0.004] * 5
         self.bestAction = -2
 
     #Convert the best action index to string
@@ -39,6 +39,7 @@ class Node:
             if reward > highest_q:
                 highest_q = reward
                 chosen_action = i
+
         if giveUpReward > highest_q:
             chosen_action = 4
             highest_q = giveUpReward

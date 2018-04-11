@@ -39,13 +39,6 @@ class World:
       #set the goal
       self.grid[4][3].isGoal = True
 
-      #Loop through everything and set the rewards
-      # for i in xrange(self.height):
-      #     for j in xrange(self.width):
-      #         currNode = self.grid[i][j]
-      #         currNode.reward = self.actionReward
-
-
 
   #Gets the world as a string
   def getWorld(self):

@@ -205,7 +205,7 @@ class Agent:
         self.last_action = -1
         self.last_state = []
         self.current_state = []
-        self.totalReward = 0
+        #self.totalReward = 0
 
 
 
@@ -251,7 +251,7 @@ class Agent:
         else:
             q1 = world.giveUpReward
 
-        print(previousAction)
+        #print(previousAction)
         q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Get the math
@@ -268,7 +268,7 @@ class Agent:
     def train(self,trialNum,epsilon,world):
         totalValues = []
         averages = []
-        range = 1
+        range = 1.5
         trialAsym = 0
         countFlag = False
         asymNum = -1
@@ -327,7 +327,7 @@ class Agent:
             if (len(averages) > 5):
                 averages.pop(0)
             if(len(averages) == 5):
-                print(averages)
+                #print(averages)
                 av = np.array(averages)
                 allAbove = (av > av[2]-range/2).all()
                 allBelow = (av < av[2]+range/2).all()
@@ -339,8 +339,16 @@ class Agent:
 
         world.printWorld( -1, -1)
         world.printNumsWorld()
-        print("Asymptoted after " + str(asymNum+1) + " trials.")
-        print("Future Reward: " + str(self.totalReward))
+        if(asymNum == -1):
+            print("This World did not converged!")
+            print("Future Reward: " + str(self.totalReward/trialNum))
+
+        else:
+            print("Asymptoted after " + str(asymNum+1) + " trials.")
+            print("Future Reward: " + str(self.totalReward/(asymNum+1)))
+
+
+
 
 
 
