@@ -1,5 +1,6 @@
 from Node import Node
 
+
 #Grid World (holds all the data)
 class World:
   def __init__(self,pitReward,goalReward,giveUpReward,actionReward):
@@ -72,8 +73,37 @@ class World:
     return string
 
 
+  #Prints the node's best action reward
+  def printNumsWorld(self):
+      for i in xrange(self.height):
+          string = ""
+          for j in xrange(self.width):
+              #Print the World based on the node's info
+              currNode = self.grid[i][j]
+
+              if(currNode.isWall):
+                  string += "X       "
+
+              elif(currNode.isPit):
+                  string += "P       "
+
+              elif(currNode.isGoal):
+                  string += "*       "
+
+              elif(currNode.isStart):
+                  string += "S       "
+
+              else:
+                  string += str(round(currNode.possRewards[currNode.bestAction], 3)) + "  "
+
+
+
+          print(string + "\n")
+
+      print("-------------------------------------------------\n")
+
   #Prints the world
-  def printWorld(self, reward, Ai, Aj):
+  def printWorld(self, Ai, Aj):
 
       for i in xrange(self.height):
           string = ""
@@ -82,25 +112,22 @@ class World:
               currNode = self.grid[i][j]
 
               if(Ai == i and Aj == j):
-                  string += "A  "
+                  string += "A   "
 
               elif(currNode.isWall):
-                  string += "X  "
+                  string += "X   "
 
               elif(currNode.isPit):
-                  string += "P  "
+                  string += "P   "
 
               elif(currNode.isGoal):
-                  string += "*  "
+                  string += "*   "
 
               elif(currNode.isStart):
-                  string += "S  "
-
-              elif(reward):
-                  string += str(currNode.possRewards[currNode.bestAction]) + " "
+                  string += "S   "
 
               else:
-                  string += currNode.getBestActionString() + "  "
+                  string += currNode.getBestActionString() + "   "
 
           print(string + "\n")
 
