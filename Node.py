@@ -11,7 +11,7 @@ class Node:
 
         #0=UP, 1=Right, 2=Down, 3= Left
         self.possRewards = [0] * 4
-        self.bestAction = 0
+        self.bestAction = -2
 
     #Convert the best action index to string
     def getBestActionString(self):
@@ -25,6 +25,8 @@ class Node:
             return "v"
         elif(action == 3):
             return "<"
+        elif(action == -2):
+            return " "
         else:
             return "G"
 

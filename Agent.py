@@ -23,6 +23,7 @@ class Agent:
 
         if random.randint(0, 100) < epsilon:
             chosen_action = random.randint(0, 3)
+            print("EXPLORING!")
         else:
             highest_q = -100000000
             for i, reward in enumerate(world.grid[i][j].possRewards):
@@ -73,15 +74,15 @@ class Agent:
 
 
         #Info
-        previousState = self.last_state
-        currState = self.current_state
-        previousAction = self.last_action
-        currAction = action
+        #previousState = self.last_state
+        #currState = self.current_state
+        #previousAction = self.last_action
+        #currAction = action
 
         #Check if the current position is terminal state then update q and break
-        if(self.isTerminalState(i,j,world) or action == 4):
-            self.updateQTS(world, currState, previousState, previousAction)
-            return 1
+        #if(self.isTerminalState(i,j,world) or action == 4):
+        #    self.updateQTS(world, currState, previousState, previousAction)
+        #    return 1
 
 
         #Normal Behavior 70%
@@ -174,24 +175,27 @@ class Agent:
                 elif(action == 3 and self.validJ(j-1, world)):
                   j-=1
 
-                #If the new coordinates happen to be in the pit then just return them
-                if(self.isTerminalState(i,j,world)):
-                    #Break the loop because we have reached a terminal state
+                # If the new coordinates happen to be in the pit then just return them
+                if (self.isTerminalState(i, j, world)):
                     break
+
 
                 #otherwise you can keep changing them
 
         #Check if this is the beginning of the walk
-        if(previousAction != -1):
-            self.updateQ(world, currState, previousState, previousAction, currAction)
+        #if(previousAction != -1):
+        #    self.updateQ(world, currState, previousState, previousAction, currAction)
 
         #update positions
-        self.last_state = currState
-        self.last_action = currAction
+        #self.last_state = currState
+        #self.last_action = currAction
         self.current_state = [i,j]
 
-        return 0
-
+        # If the new coordinates happen to be in the pit then just return them
+        if (self.isTerminalState(i, j, world)):
+            return 1
+        else:
+            return 0
 
 
     #Clean agent
@@ -216,7 +220,7 @@ class Agent:
         q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Math to update q1 based on what we found on q2
-        math = q1 + self.stepSize * (world.actionReward + (self.gama * q2) - q1)
+        math = q2 + self.stepSize * (world.actionReward + (self.gama * q1) - q2)
 
         #Update q1
         world.grid[i2][j2].possRewards[previousAction] = math
@@ -243,7 +247,7 @@ class Agent:
         q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Get the math
-        math = q1 + self.stepSize * (world.actionReward + (self.gama * q2) - q1)
+        math = q2 + self.stepSize * (world.actionReward + (self.gama * q1) - q2)
 
         #
         world.grid[i2][j2].possRewards[previousAction] = math
@@ -271,12 +275,27 @@ class Agent:
                     currentState = self.current_state
                     world.printWorld(False, currentState[0], currentState[1])
 
+                # choose action
                 action = self.choose_action(world,epsilon)
+                print "CHOSEN ACTION = ",action
+                # set this to prev state/action
+                prevState = self.current_state
+                prevAction = action
+                # make the action
                 finish = self.make_action(action, world)
+                # set this as next state, choose best action from here
+                currState = self.current_state
+                currAction = self.choose_action(world,epsilon)
+                # update q of previous state
+                if (finish):
+                    self.updateQTS(world,currState,prevState,prevAction)
+                else:
+                    self.updateQ(world,currState,prevState,prevAction,currAction)
 
-                Ai = self.current_state[0]
-                Aj = self.current_state[1]
-                world.printWorld(False,Ai, Aj)
+
+                #Ai = self.current_state[0]
+                #Aj = self.current_state[1]
+                #world.printWorld(False,Ai, Aj)
 
 
                 # if finish is true, break loop and go to next trial
