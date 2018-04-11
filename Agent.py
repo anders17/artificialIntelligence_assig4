@@ -21,9 +21,9 @@ class Agent:
         i = self.current_state[0]
         j = self.current_state[1]
 
-        if random.randint(0, 100) < epsilon:
+        if random.random() < epsilon:
             chosen_action = random.randint(0, 3)
-            #print("EXPLORING!")
+
         else:
             highest_q = -100000000
             for count, reward in enumerate(world.grid[i][j].possRewards):
@@ -281,18 +281,6 @@ class Agent:
                     currentState = self.current_state
                     world.printWorld(currentState[0], currentState[1])
 
-
-                #check if the new world is the same as the previous world
-                newWorld= world.getWorld()
-
-                if(prevWorld == newWorld):
-                    count += 1
-
-                else:
-                    count = 0
-                    prevWorld = newWorld
-
-
                 # choose action
                 action = self.choose_action(world,epsilon)
 
@@ -306,6 +294,7 @@ class Agent:
                 # set this as next state, choose best action from here
                 currState = self.current_state
                 currAction = self.choose_action(world,epsilon)
+
                 # update q of previous state
                 if (finish):
                     self.updateQTS(world,currState,prevState,prevAction)
@@ -314,9 +303,23 @@ class Agent:
 
                 # if finish is true, break loop and go to next trial
                 if(finish):
+                    # grab the new world
+                    newWorld = world.getWorld()
                     break
 
-            #world.printWorld(False, self.current_state[0], self.current_state[1] )
+
+            # check if the new world is the same as previous
+            if (prevWorld == newWorld):
+                count += 1
+
+            else:
+                count = 0
+                prevWorld = newWorld
+            print(count)
+
+            if(count >= 100):
+                trialAsym = i
+                break
             self.cleanAgent()
 
         world.printWorld( -1, -1)
