@@ -37,13 +37,11 @@ class Node:
         highest_q = -100000000
         for i, reward in enumerate(self.possRewards):
             if reward > highest_q:
-                print(reward)
                 highest_q = reward
                 chosen_action = i
         if giveUpReward > highest_q:
             chosen_action = 4
             highest_q = giveUpReward
-
 
         self.bestAction = chosen_action
 

@@ -301,7 +301,7 @@ class Agent:
             world.printWorld(False, self.current_state[0], self.current_state[1] )
             self.cleanAgent()
 
-        world.printWorld(True, -1, -1)
+        world.printWorld(False, -1, -1)
 
 
 
