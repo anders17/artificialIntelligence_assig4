@@ -216,7 +216,7 @@ class Agent:
         q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Math to update q1 based on what we found on q2
-        math = q1 + self.stepSize * (world.actionReward + (self.gama * q2) - q1)
+        math = q2 + self.stepSize * (world.actionReward + (self.gama * q1) - q2)
 
         #Update q1
         world.grid[i2][j2].possRewards[previousAction] = math
@@ -243,7 +243,7 @@ class Agent:
         q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Get the math
-        math = q1 + self.stepSize * (world.actionReward + (self.gama * q2) - q1)
+        math = q2 + self.stepSize * (world.actionReward + (self.gama * q1) - q2)
 
         #
         world.grid[i2][j2].possRewards[previousAction] = math
@@ -276,7 +276,8 @@ class Agent:
 
                 Ai = self.current_state[0]
                 Aj = self.current_state[1]
-                world.printWorld(False,Ai, Aj)
+
+
 
 
                 # if finish is true, break loop and go to next trial
