@@ -16,7 +16,8 @@ def main():
   pitReward = -2
   actionReward = -.1
   giveUpReward = -3
-  trialNum = 50000
+  trialNum = 100000
+
   epsilon = 0.1
 
   #World Setup
