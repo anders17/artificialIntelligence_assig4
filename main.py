@@ -4,21 +4,21 @@ from Agent import Agent
 #Main Function
 def main():
   #User input
-  # goalReward = raw_input('Enter the reward for the goal state:')
-  # pitReward = raw_input('Enter the reward for a pit state:')
-  # actionReward = raw_input('Enter the reward for taking an action:')
-  # giveUpReward = raw_input('Enter the reward for giving up:')
-  # trialNum = raw_input('Enter the number of trials to train the agent for:')
-  # epsilon = raw_input('Enter the epsilon parameter:')
+  # goalReward = input('Enter the reward for the goal state:')
+  # pitReward = input('Enter the reward for a pit state:')
+  # actionReward = input('Enter the reward for taking an action:')
+  # giveUpReward = input('Enter the reward for giving up:')
+  # trialNum = input('Enter the number of trials to train the agent for:')
+  # epsilon = input('Enter the epsilon parameter:')
 
   #Testing Vars
   goalReward = 10
   pitReward = -200
   actionReward = -.1
   giveUpReward = -3
-  trialNum = 10000
+  trialNum = 1000
 
-  epsilon = 0
+  epsilon = 0.01
 
   #World Setup
   myWorld = World(float(goalReward),float(pitReward),float(giveUpReward),float(actionReward))

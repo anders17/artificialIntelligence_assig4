@@ -1,6 +1,7 @@
 #Agent class
 import random
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Agent:
     def __init__(self):
@@ -14,6 +15,8 @@ class Agent:
         self.gama = 0.9
         self.totalReward = 0
         self.AllTrialRewards = 0
+        self.agg_averages = []
+        self.agg_count_list = []
 
     # choose action
     # see if exploring
@@ -275,6 +278,8 @@ class Agent:
         trialAsym = 0
         countFlag = False
         asymNum = -1
+        agg_count = 1
+        agg_mod = 0
 
         for i in xrange(trialNum):
             print('Trial ' + str(i))
@@ -338,12 +343,36 @@ class Agent:
                     asymNum = i
                     break
 
+            # plot aggregate averages
+            agg_mod = i % 20
+            if agg_mod == 19:
+                self.agg_averages.append(sum(totalValues)/len(totalValues))
+                self.agg_count_list.append(agg_count)
+                agg_count += 1
+
             self.cleanAgent()
 
+        print" --RECOMMENDED ACTIONS-- "
         world.printWorld( -1, -1)
+        print" --NEXT REWARDS--"
         world.printNumsWorld()
+
+        # agg avg plot info
+        #print "agg_averages", self.agg_averages
+        #print "agg_count", self.agg_count_list
+        # plot
+        plt.scatter(self.agg_count_list, self.agg_averages)
+
+        # x-axis label
+        plt.xlabel('agg_count')
+        # frequency label
+        plt.ylabel('aggregate reward')
+        # plot title
+        plt.title('Aggregate average reward')
+        plt.show()
+
         if(asymNum == -1):
-            print("This World did not converged!")
+            print("This World did not converge!")
             print("Future Reward: " + str(self.AllTrialRewards/trialNum))
 
         else:
