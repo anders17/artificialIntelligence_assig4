@@ -260,6 +260,12 @@ class Agent:
 
     #Trains the agent
     def train(self,trialNum,epsilon,world):
+        prevWorld = ""
+        newWorld = ""
+        count = 0
+        trialAsym = 0
+        countFlag = False
+
         for i in xrange(trialNum):
             print('Trial ' + str(i))
             iLoc = 0
@@ -275,9 +281,27 @@ class Agent:
                     currentState = self.current_state
                     world.printWorld(False, currentState[0], currentState[1])
 
+                if(count >= 100):
+                    if(countFlag == False):
+                        trialAsym = i
+                        countFlag = True
+                    break
+
+
+                #check if the new world is the same as the previous world
+                newWorld= world.getWorld()
+
+                if(prevWorld == newWorld):
+                    count += 1
+
+                else:
+                    count = 0
+                    prevWorld = newWorld
+
+
                 # choose action
                 action = self.choose_action(world,epsilon)
-                print "CHOSEN ACTION = ",action
+
                 # set this to prev state/action
                 prevState = self.current_state
                 prevAction = action
@@ -298,7 +322,7 @@ class Agent:
                 if(finish):
                     break
 
-            world.printWorld(False, self.current_state[0], self.current_state[1] )
+            #world.printWorld(False, self.current_state[0], self.current_state[1] )
             self.cleanAgent()
 
         world.printWorld(False, -1, -1)

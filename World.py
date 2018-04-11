@@ -46,6 +46,31 @@ class World:
 
 
 
+  #Gets the world as a string
+  def getWorld(self):
+    string = ""
+    for i in xrange(self.height):
+
+        for j in xrange(self.width):
+          #Print the World based on the node's info
+          currNode = self.grid[i][j]
+
+          if(currNode.isWall):
+            string += "X  "
+
+          elif(currNode.isPit):
+            string += "P  "
+
+          elif(currNode.isGoal):
+            string += "*  "
+
+          else:
+            string += currNode.getBestActionString() + "  "
+
+        string += "\n"
+
+    return string
+
 
   #Prints the world
   def printWorld(self, reward, Ai, Aj):
