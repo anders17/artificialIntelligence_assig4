@@ -192,7 +192,7 @@ class Agent:
         self.current_state = [i,j]
 
         # If the new coordinates happen to be in the pit then just return them
-        if (self.isTerminalState(i, j, world)):
+        if (self.isTerminalState(i, j, world) or action == 4):
             return 1
         else:
             return 0
@@ -305,6 +305,7 @@ class Agent:
                 if(finish):
                     # grab the new world
                     newWorld = world.getWorld()
+                    # world.printRecActions()
                     break
 
 
@@ -317,7 +318,7 @@ class Agent:
                 prevWorld = newWorld
             print(count)
 
-            if(count >= 100):
+            if(count >= 5):
                 trialAsym = i
                 break
             self.cleanAgent()

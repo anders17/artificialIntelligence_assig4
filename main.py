@@ -16,7 +16,7 @@ def main():
   pitReward = -2
   actionReward = -.1
   giveUpReward = -3
-  trialNum = 100000
+  trialNum = 10000
 
   epsilon = 0.1
 
