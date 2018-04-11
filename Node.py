@@ -10,7 +10,7 @@ class Node:
         self.isWall = False
 
         #0=UP, 1=Right, 2=Down, 3= Left
-        self.possRewards = [0] * 4
+        self.possRewards = [-0.004] * 4
         self.bestAction = -2
 
     #Convert the best action index to string

@@ -23,7 +23,7 @@ class Agent:
 
         if random.randint(0, 100) < epsilon:
             chosen_action = random.randint(0, 3)
-            print("EXPLORING!")
+            #print("EXPLORING!")
         else:
             highest_q = -100000000
             for count, reward in enumerate(world.grid[i][j].possRewards):
@@ -279,13 +279,7 @@ class Agent:
             while(1):
                 if(i == trialNum-1):
                     currentState = self.current_state
-                    world.printWorld(False, currentState[0], currentState[1])
-
-                if(count >= 100):
-                    if(countFlag == False):
-                        trialAsym = i
-                        countFlag = True
-                    break
+                    world.printWorld(currentState[0], currentState[1])
 
 
                 #check if the new world is the same as the previous world
@@ -325,7 +319,8 @@ class Agent:
             #world.printWorld(False, self.current_state[0], self.current_state[1] )
             self.cleanAgent()
 
-        world.printWorld(False, -1, -1)
+        world.printWorld( -1, -1)
+        world.printNumsWorld()
 
 
 
