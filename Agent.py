@@ -1,5 +1,6 @@
 #Agent class
 import random
+# import numpy
 
 class Agent:
     def __init__(self):
@@ -11,6 +12,7 @@ class Agent:
         self.possibleMoves = 5
         self.stepSize = 0.5
         self.gama = 0.9
+        self.totalReward = 0
 
     # choose action
     # see if exploring
@@ -23,7 +25,7 @@ class Agent:
 
         if random.random() < epsilon:
             chosen_action = random.randint(0, 3)
-            # print("EXPLORING!")
+
         else:
             highest_q = -100000000
             for count, reward in enumerate(world.grid[i][j].possRewards):
@@ -203,6 +205,7 @@ class Agent:
         self.last_action = -1
         self.last_state = []
         self.current_state = []
+        self.totalReward = 0
 
 
 
@@ -226,6 +229,9 @@ class Agent:
         world.grid[i2][j2].possRewards[previousAction] = math
         world.grid[i2][j2].setBestAction(world.giveUpReward)
 
+        self.totalReward += world.actionReward
+
+
     #Updates the previous state whenever we have reached a pit in our current position
     def updateQTS(self,world, currState, previousState, previousAction):
         #q1
@@ -244,6 +250,8 @@ class Agent:
             q1 = world.goalReward
         else:
             q1 = world.giveUpReward
+
+        print(previousAction)
         q2 = world.grid[i2][j2].possRewards[previousAction]
 
         #Get the math
@@ -253,18 +261,17 @@ class Agent:
         world.grid[i2][j2].possRewards[previousAction] = math
         world.grid[i2][j2].setBestAction(world.giveUpReward)
 
-
-
-
+        self.totalReward += q1
 
 
     #Trains the agent
     def train(self,trialNum,epsilon,world):
-        prevWorld = ""
-        newWorld = ""
-        count = 0
+        totalValues = []
+        averages = []
+        range = 0.1
         trialAsym = 0
         countFlag = False
+        asymNum = -1
 
         for i in xrange(trialNum):
             print('Trial ' + str(i))
@@ -279,7 +286,7 @@ class Agent:
             while(1):
                 if(i == trialNum-1):
                     currentState = self.current_state
-                    world.printWorld(False, currentState[0], currentState[1])
+                    world.printWorld(currentState[0], currentState[1])
 
                 # choose action
                 action = self.choose_action(world,epsilon)
@@ -303,27 +310,32 @@ class Agent:
 
                 # if finish is true, break loop and go to next trial
                 if(finish):
-                    # grab the new world
-                    newWorld = world.getWorld()
                     # world.printRecActions()
                     break
 
 
-            # check if the new world is the same as previous
-            if (prevWorld == newWorld):
-                count += 1
+            # add reward to totalValues
+            totalValues.append(self.totalReward)
 
-            else:
-                count = 0
-                prevWorld = newWorld
-            print(count)
+            # calculate average
+            averages.append(sum(totalValues)/len(totalValues))
 
-            if(count >= 5):
-                trialAsym = i
-                break
+            # remove first average if more than 5
+
+            if (len(averages) > 5):
+                averages.pop(0)
+            if(len(averages) == 5):
+                print(averages)
+                if((averages > averages[2]-range/2) and (averages < averages[2]+range/2)):
+                    asymNum = i
+                    break
+
             self.cleanAgent()
 
-        world.printWorld(False, -1, -1)
+        world.printWorld( -1, -1)
+        world.printNumsWorld()
+        print("Asymptoted after " + str(asymNum) + " trials.")
+        print("Future Reward: " + str(self.totalReward))
 
 
 
