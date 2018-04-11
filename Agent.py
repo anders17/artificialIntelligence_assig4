@@ -13,6 +13,7 @@ class Agent:
         self.stepSize = 0.5
         self.gama = 0.9
         self.totalReward = 0
+        self.AllTrialRewards = 0
 
     # choose action
     # see if exploring
@@ -205,7 +206,9 @@ class Agent:
         self.last_action = -1
         self.last_state = []
         self.current_state = []
-        #self.totalReward = 0
+        self.AllTrialRewards += self.totalReward
+        self.totalReward = 0
+
 
 
 
@@ -268,7 +271,7 @@ class Agent:
     def train(self,trialNum,epsilon,world):
         totalValues = []
         averages = []
-        range = 1.5
+        range = 1
         trialAsym = 0
         countFlag = False
         asymNum = -1
@@ -341,11 +344,11 @@ class Agent:
         world.printNumsWorld()
         if(asymNum == -1):
             print("This World did not converged!")
-            print("Future Reward: " + str(self.totalReward/trialNum))
+            print("Future Reward: " + str(self.AllTrialRewards/trialNum))
 
         else:
             print("Asymptoted after " + str(asymNum+1) + " trials.")
-            print("Future Reward: " + str(self.totalReward/(asymNum+1)))
+            print("Future Reward: " + str(self.AllTrialRewards/(asymNum+1)))
 
 
 
