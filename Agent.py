@@ -324,7 +324,7 @@ class Agent:
 
             # add reward to totalValues
             totalValues.append(self.totalReward)
-            if(len(totalValues) > 20):
+            if(len(totalValues) > 50):
                 totalValues.pop(0)
 
             # calculate average
@@ -344,8 +344,8 @@ class Agent:
                     break
 
             # plot aggregate averages
-            agg_mod = i % 20
-            if agg_mod == 19:
+            agg_mod = i % 50
+            if agg_mod == 49:
                 self.agg_averages.append(sum(totalValues)/len(totalValues))
                 self.agg_count_list.append(agg_count)
                 agg_count += 1

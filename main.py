@@ -16,9 +16,9 @@ def main():
   pitReward = -200
   actionReward = -.1
   giveUpReward = -3
-  trialNum = 1000
+  trialNum = 10000
 
-  epsilon = 0.01
+  epsilon = 0.2
 
   #World Setup
   myWorld = World(float(goalReward),float(pitReward),float(giveUpReward),float(actionReward))
