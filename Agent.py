@@ -23,12 +23,13 @@ class Agent:
 
         if random.randint(0, 100) < epsilon:
             chosen_action = random.randint(0, 3)
+            print("EXPLORING!")
         else:
             highest_q = -100000000
-            for i, reward in enumerate(world.grid[i][j].possRewards):
+            for count, reward in enumerate(world.grid[i][j].possRewards):
                 if reward > highest_q:
                     highest_q = reward
-                    chosen_action = i
+                    chosen_action = count
             if(world.grid[i][j].possRewards[1:] == world.grid[i][j].possRewards[:-1]):
                 chosen_action = random.randint(0, 3)
             if world.giveUpReward > highest_q:
@@ -73,15 +74,15 @@ class Agent:
 
 
         #Info
-        previousState = self.last_state
-        currState = self.current_state
-        previousAction = self.last_action
-        currAction = action
+        #previousState = self.last_state
+        #currState = self.current_state
+        #previousAction = self.last_action
+        #currAction = action
 
         #Check if the current position is terminal state then update q and break
-        if(self.isTerminalState(i,j,world) or action == 4):
-            self.updateQTS(world, currState, previousState, previousAction)
-            return 1
+        #if(self.isTerminalState(i,j,world) or action == 4):
+        #    self.updateQTS(world, currState, previousState, previousAction)
+        #    return 1
 
 
         #Normal Behavior 70%
@@ -174,24 +175,27 @@ class Agent:
                 elif(action == 3 and self.validJ(j-1, world)):
                   j-=1
 
-                #If the new coordinates happen to be in the pit then just return them
-                if(self.isTerminalState(i,j,world)):
-                    #Break the loop because we have reached a terminal state
+                # If the new coordinates happen to be in the pit then just return them
+                if (self.isTerminalState(i, j, world)):
                     break
+
 
                 #otherwise you can keep changing them
 
         #Check if this is the beginning of the walk
-        if(previousAction != -1):
-            self.updateQ(world, currState, previousState, previousAction, currAction)
+        #if(previousAction != -1):
+        #    self.updateQ(world, currState, previousState, previousAction, currAction)
 
         #update positions
-        self.last_state = currState
-        self.last_action = currAction
+        #self.last_state = currState
+        #self.last_action = currAction
         self.current_state = [i,j]
 
-        return 0
-
+        # If the new coordinates happen to be in the pit then just return them
+        if (self.isTerminalState(i, j, world)):
+            return 1
+        else:
+            return 0
 
 
     #Clean agent
@@ -271,44 +275,33 @@ class Agent:
                     currentState = self.current_state
                     world.printWorld(False, currentState[0], currentState[1])
 
+                # choose action
                 action = self.choose_action(world,epsilon)
+                print "CHOSEN ACTION = ",action
+                # set this to prev state/action
+                prevState = self.current_state
+                prevAction = action
+
+                # make the action
                 finish = self.make_action(action, world)
 
-                Ai = self.current_state[0]
-                Aj = self.current_state[1]
-
-
-
+                # set this as next state, choose best action from here
+                currState = self.current_state
+                currAction = self.choose_action(world,epsilon)
+                # update q of previous state
+                if (finish):
+                    self.updateQTS(world,currState,prevState,prevAction)
+                else:
+                    self.updateQ(world,currState,prevState,prevAction,currAction)
 
                 # if finish is true, break loop and go to next trial
                 if(finish):
                     break
 
+            world.printWorld(False, self.current_state[0], self.current_state[1] )
             self.cleanAgent()
 
-        world.printRecActions()
-
-
-    #Next coordinates if you take this action
-    # def nextCoord(self, currState, action):
-    #     i = currState[0]
-    #     j = currState[1]
-    #
-    #     #Up
-    #     if(action == 0):
-    #       j+=1
-    #     #Right
-    #     elif(action == 1):
-    #       i+=1
-    #     #Down
-    #     elif(action == 2):
-    #       j-=1
-    #
-    #     #Left
-    #     elif(action == 3):
-    #       i-=1
-    #
-    #     return [i,j]
+        world.printWorld(True, -1, -1)
 
 
 

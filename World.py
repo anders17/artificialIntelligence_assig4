@@ -113,6 +113,9 @@ class World:
               elif (currNode.bestAction == 3):
                   string += "<  "
 
+              elif (currNode.bestAction == -2):
+                  string += "   "
+
               else:
                   string += "G  "
 
