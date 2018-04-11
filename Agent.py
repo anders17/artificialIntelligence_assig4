@@ -1,6 +1,6 @@
 #Agent class
 import random
-# import numpy
+import numpy as np
 
 class Agent:
     def __init__(self):
@@ -268,7 +268,7 @@ class Agent:
     def train(self,trialNum,epsilon,world):
         totalValues = []
         averages = []
-        range = 0.1
+        range = 1
         trialAsym = 0
         countFlag = False
         asymNum = -1
@@ -316,6 +316,8 @@ class Agent:
 
             # add reward to totalValues
             totalValues.append(self.totalReward)
+            if(len(totalValues) > 20):
+                totalValues.pop(0)
 
             # calculate average
             averages.append(sum(totalValues)/len(totalValues))
@@ -326,7 +328,10 @@ class Agent:
                 averages.pop(0)
             if(len(averages) == 5):
                 print(averages)
-                if((averages > averages[2]-range/2) and (averages < averages[2]+range/2)):
+                av = np.array(averages)
+                allAbove = (av > av[2]-range/2).all()
+                allBelow = (av < av[2]+range/2).all()
+                if(allAbove and allBelow):
                     asymNum = i
                     break
 
@@ -334,7 +339,7 @@ class Agent:
 
         world.printWorld( -1, -1)
         world.printNumsWorld()
-        print("Asymptoted after " + str(asymNum) + " trials.")
+        print("Asymptoted after " + str(asymNum+1) + " trials.")
         print("Future Reward: " + str(self.totalReward))
 
 
