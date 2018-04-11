@@ -23,7 +23,7 @@ class Agent:
 
         if random.randint(0, 100) < epsilon:
             chosen_action = random.randint(0, 3)
-            print("EXPLORING!")
+            # print("EXPLORING!")
         else:
             highest_q = -100000000
             for count, reward in enumerate(world.grid[i][j].possRewards):
@@ -277,7 +277,7 @@ class Agent:
 
                 # choose action
                 action = self.choose_action(world,epsilon)
-                print "CHOSEN ACTION = ",action
+                # print "CHOSEN ACTION = ",action
                 # set this to prev state/action
                 prevState = self.current_state
                 prevAction = action
@@ -298,7 +298,7 @@ class Agent:
                 if(finish):
                     break
 
-            world.printWorld(False, self.current_state[0], self.current_state[1] )
+            # world.printWorld(False, self.current_state[0], self.current_state[1] )
             self.cleanAgent()
 
         world.printWorld(False, -1, -1)
